@@ -117,7 +117,6 @@ export default {
   },
   methods: {
     async submitForm() {
-      this.$nuxt.$loading.start()
       this.loading = true
       const response = await AuthenticationService.login({
         email: this.email,
@@ -131,14 +130,15 @@ export default {
             name: "index"
           });
           this.$store.dispatch("login", response)
-          this.$nuxt.$loading.finish()
           this.loading = false
         }, 1500)
       }).catch(err => {
-        console.log(err)
-        this.$nuxt.$loading.finish()
-        this.variant = 'warning'
+        console.log(err.response)
         this.error = err.response.data.error
+        if (err.response.status == 429) {
+          this.error = err.response.data
+        }
+        this.variant = 'warning'
         this.loading = false
       })
     }
@@ -180,7 +180,7 @@ a,
 }
 
 .increaseFrame {
-  height: 23rem !important;
+  height: 25rem !important;
 }
 
 .signup__overlay {

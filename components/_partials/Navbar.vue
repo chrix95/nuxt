@@ -8,8 +8,8 @@
             <b-collapse id="nav-collapse" is-nav>
 
             <!-- Right aligned nav items -->
-            <b-navbar-nav class="ml-auto">
-                <b-navbar-nav right v-if="!$store.state.isLoggedIn">
+            <b-navbar-nav class="ml-auto" v-if="!$store.state.isLoggedIn">
+                <b-navbar-nav right>
                     <b-nav-item to="/login">
                         Login
                     </b-nav-item>
@@ -17,7 +17,12 @@
                         Register
                     </b-nav-item>
                 </b-navbar-nav>
-                <b-nav-item-dropdown v-else right>
+            </b-navbar-nav>
+            <b-navbar-nav class="ml-auto" v-else>
+                <b-nav-item to="/blog">
+                    Blog
+                </b-nav-item>
+                <b-nav-item-dropdown right>
                     <template v-slot:button-content>
                         <strong>User</strong>
                     </template>

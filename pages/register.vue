@@ -70,9 +70,9 @@
     data() {
       return {
         fields: {
-          name: 'Chris',
+          name: 'Ehis Ali',
           phone: '08182889384',
-          email: 'engchris95@gmail.com',
+          email: 'ehis_ali@gmail.com',
           password: 'jesus95@',
           passwordRepeat: 'jesus95@'
         },
@@ -85,7 +85,6 @@
     methods: {
       async submitForm() {
         if (this.fields.password == this.fields.passwordRepeat) {
-          this.$nuxt.$loading.start()
           this.loading = true
           const response = await AuthenticationService.register({
             name: this.fields.name,
@@ -103,12 +102,10 @@
                 })
                 this.$store.dispatch('register', response)
                 this.loading = false
-                this.$nuxt.$loading.finish()
               }, 3000);
               this.error = this.success
               this.variant = 'success'
             }).catch(err => {
-              this.$nuxt.$loading.finish()
               this.variant = 'warning'
               this.error = err.response.data.error
               this.loading = false

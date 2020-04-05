@@ -1,29 +1,72 @@
 // import the model required
 const models = require('../models/index.js')
 
-const User = models.User
-
-const posts = [
-    {
-        username: 'Christopher',
-        title: 'Christopher Post is available to you'
-    },
-    {
-        username: 'Jim',
-        title: 'Post 1'
-    },
-    {
-        username: 'Kelly',
-        title: 'Post 2'
-    }
-]
+const Post = models.Post
 
 module.exports = {
-    fetch (req, res) {
+    async getPosts(req, res) {
         try {
-          return res.status(200).json(posts)
+            const data = await Post.findAll({
+                where: {
+                    userId: req.user.id
+                }
+            })
+            if (!data) {
+                return res.status(403).send({
+                    error: 'No post available'
+                })
+            }
+            let posts = []
+            data.forEach(post => {
+                var option = {
+                    title: post.title,
+                    subtitle: post.subtitle,
+                    slug: post.slug,
+                    description: post.description,
+                    date_created: post.created_at
+                }
+                posts.push(option)
+            });
+            return res.status(200).send({
+                message: 'Successful',
+                posts: posts
+            })
         } catch (error) {
-          console.log(error)
+            console.log(error)
+            return res.status(500).send({
+                error: 'Unable to fetch post'
+            })
+        }
+    },
+
+    async getPost(req, res) {
+        try {
+            const data = await Post.findOne({
+                where: {
+                    slug: req.params.slug
+                }
+            })
+            if (!data) {
+                return res.status(404).send({
+                    error: 'No post available'
+                })
+            }
+            var post = {
+                title: data.title,
+                subtitle: data.subtitle,
+                slug: data.slug,
+                description: data.description,
+                date_created: data.created_at
+            }
+            return res.status(200).send({
+                message: 'Successful',
+                post: post
+            })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({
+                error: 'Unable to fetch post'
+            })
         }
     }
 }

@@ -24,5 +24,6 @@ module.exports = (app) => {
   app.post('/api/auth/login', AuthenticationController.login)
 
   // authenticated route
-  app.get('/api/posts', AuthenticationControllerPolicy.auth, PostController.fetch)
+  app.get('/api/posts', AuthenticationControllerPolicy.auth, PostController.getPosts)
+  app.get('/api/posts/:slug', AuthenticationControllerPolicy.auth, PostController.getPost)
 }

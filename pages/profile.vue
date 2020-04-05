@@ -1,61 +1,52 @@
 <template>
   <div>
-    <b-card title="Title" sub-title="subtitle">
-      <b-card-text>
-        Some quick example text to build on the <em>card title</em> and make up
-        the bulk of the card's content.
-      </b-card-text>
-
-      <b-card-text>A second paragraph of text in the card.</b-card-text>
-
-      <a href="#" class="card-link" @click.prevent="getPost">Fetch Post</a>
-      <b-link href="#" class="card-link">Another link</b-link>
-    </b-card>
+    <b-container class="bv-example-row mt-3">
+      <b-row align-h="center">
+        <b-col cols="8">
+          <b-card :title="name" :sub-title="email">
+            <b-card-text>
+              Some quick example text to build on the <em>card title</em> and
+              make up the bulk of the card's content.
+            </b-card-text>
+            <b-card-text>A second paragraph of text in the card.</b-card-text>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
-import PostService from "@/services/PostService";
 export default {
+  head() {
+    return {
+      title: "Profile | " + this.name,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Profile information for " + this.name,
+        },
+      ],
+    };
+  },
+  middleware: 'authenticated',
   mounted() {
-    this.getPosts()
+  },
+  computed: {
+    name: function () {
+      // `this` points to the vm instance
+      return this.$store.state.user.name;
+    },
+    email: function () {
+      // `this` points to the vm instance
+      return this.$store.state.user.email;
+    },
   },
   data() {
-    return {
-      loading: false
-    }
+    return {}
   },
-  methods: {
-    async getPosts() {
-      this.$nuxt.$loading.start()
-      this.loading = true
-      const response = await PostService.getPosts()
-        .then((response) => {
-          console.log('success')
-          console.log(response)
-          // // this.success = response.data.message
-          // this.error = this.success
-          // this.variant = 'success'
-          // setTimeout(() => {
-          //   this.$router.push({
-          //     name: "index"
-          //   });
-          //   this.$store.dispatch("login", response)
-          //   this.$nuxt.$loading.finish()
-          //   this.loading = false
-          // }, 1500)
-          this.$nuxt.$loading.finish()
-          this.loading = false
-        }).catch(err => {
-          console.log('err')
-          console.log(err)
-          this.$nuxt.$loading.fail(err)
-          // this.variant = 'warning'
-          // this.error = err.response.data.error
-          // this.loading = false
-        })
-    }
-  }
+  methods: {},
 };
 </script>
 
