@@ -26,7 +26,7 @@
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "1.7.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "sequelize": "5.18.1",
     "vuelidate": "^0.7.5"
   },
